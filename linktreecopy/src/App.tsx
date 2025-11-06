@@ -3,6 +3,7 @@ import Home from "./pages/Home"
 import About from "./pages/About"
 import UserPage from "./pages/UserPage"
 import SlugContextProvider from "./context/SlugContextProvider"
+import Login from "./pages/Login"
 
 const App = () => {
   return (
@@ -11,10 +12,12 @@ const App = () => {
     <nav>
       <Link to={"/"}>Home</Link>
       <Link to={"/about"}>About</Link>
+      <Link to={"/login"}>Login</Link>
     </nav>
       <Routes>
         <Route index element={<Home/>} />
         <Route path="/about" element={<About/>} />
+        <Route path="/login" element={<Login/>} />
         <Route path="/u/:username" element={<UserPage />}/>
       </Routes>
     </BrowserRouter>
