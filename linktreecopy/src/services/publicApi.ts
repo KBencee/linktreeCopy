@@ -1,4 +1,6 @@
-export const BASE_URL = "https://pns0tn0c-8000.euw.devtunnels.ms"
+import axios from "axios"
+
+export const BASE_URL = "https://thjj2rgx-8000.euw.devtunnels.ms"
 
 type UserLink = {
     id: number,
@@ -16,10 +18,8 @@ export type UserLinkResponse = {
 
 export async function getUserLinks(username: string) {
     try {
-        const res = await fetch(BASE_URL + `/api/links/public/${username}/`)
-        const data: UserLinkResponse = await res.json()
-
-        return data
+        const res = await axios.get(BASE_URL + `/api/links/public/${username}/`)
+        return res.data
     } catch (error) {
         //TODO
     }
@@ -47,6 +47,6 @@ export async function loginUser(username: string, password: string) {
         return
     }
     const data:TokenResponse = await res.json()
-
-    console.log(data);
+    localStorage.setItem("refresh", data.refresh)
+    localStorage.setItem("access", data.access)
 }
