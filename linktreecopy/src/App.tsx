@@ -4,10 +4,12 @@ import About from "./pages/About"
 import UserPage from "./pages/UserPage"
 import SlugContextProvider from "./context/SlugContextProvider"
 import Login from "./pages/Login"
+import AuthenticatedUserContextProvider from "./context/AuthenticatedUserContextProvider"
 
 const App = () => {
   return (
     <SlugContextProvider>
+    <AuthenticatedUserContextProvider>
     <BrowserRouter>
     <nav>
       <Link to={"/"}>Home</Link>
@@ -21,6 +23,7 @@ const App = () => {
         <Route path="/u/:username" element={<UserPage />}/>
       </Routes>
     </BrowserRouter>
+    </AuthenticatedUserContextProvider>
     </SlugContextProvider>
   )
 }
