@@ -29,11 +29,7 @@ const UserPage = () => {
         {ctx && ctx.authUser.username === username && <NewUrlComponent />}
         <ul>
             {links?.links.map(link => 
-            <li key={link.id}>
-                <a href={link.url}>
-                {link.title}</a> {ctx && ctx.authUser.username === username && 
-                <button onClick={()=> removeURL(link.id)}>🚮</button>}
-            </li>)}
+            )}
         </ul>
     </div>
   )
