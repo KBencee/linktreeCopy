@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export const BASE_URL = "https://pns0tn0c-8000.euw.devtunnels.ms"
+export const BASE_URL = "https://thjj2rgx-8000.euw.devtunnels.ms"
 
 type UserLink = {
     id: number,
@@ -46,6 +46,7 @@ export async function loginUser(username: string, password: string) {
         //TODO
         return
     }
+    alert("Sikeres bejelentkezés!")
     const data:TokenResponse = await res.json()
     localStorage.setItem("refresh", data.refresh)
     localStorage.setItem("access", data.access)

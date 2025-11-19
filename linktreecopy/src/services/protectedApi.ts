@@ -11,6 +11,33 @@ protectedApi.interceptors.request.use(config => {
     return config;
 })
 
+protectedApi.interceptors.response.use(
+    (response) => {return response},
+    async (error) => {
+        const originalRequest = error.config
+
+        if(error.response?.status === 401 && !originalRequest.retryRequest){
+            originalRequest.retryRequest = true
+            try {
+                const refreshToken = localStorage.getItem("refresh")
+                const response = await axios.post(BASE_URL + "/api/accounts/token/refresh/", 
+                    {refresh: refreshToken})
+                const newAccesToken = response.data.access
+                originalRequest.headers["Authorization"] = `Bearer ${newAccesToken}`
+                localStorage.setItem("access", newAccesToken)
+                console.log("Acces token updated!")
+                
+                return protectedApi(originalRequest)
+            } catch (error) {
+                console.log(error);
+               localStorage.clear() 
+            }
+        }
+        return Promise.reject(error)
+    }
+)
+    
+
 export async function getUserData(){
     try {
         const response = await protectedApi("/api/accounts/me/")
