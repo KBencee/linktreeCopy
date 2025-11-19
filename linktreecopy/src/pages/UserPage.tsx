@@ -3,33 +3,23 @@ import { useParams } from "react-router-dom"
 import { getUserLinks, type UserLinkResponse } from "../services/publicApi"
 import { AuthUserContext } from "../context/AuthenticatedUserContextProvider"
 import NewUrlComponent from "../components/NewUrlComponent"
-import { deleteUrl } from "../services/protectedApi"
+import UrlComponent from "../components/UrlComponent"
 
 const UserPage = () => {
-    const {username} = useParams()
-    const [links, setLinks] = useState<UserLinkResponse | undefined>()
-
-    const ctx = useContext(AuthUserContext)
-
-    useEffect(() => {
-        getUserLinks(username || "anonymous").then(data => setLinks(data))
-    },[])
-
-    const removeURL = (id: number) => {
-        deleteUrl(id).then(res => {
-            if(res && links){
-                setLinks(prev => prev && {...prev, links: prev.links.filter(e=> e.id !== id)})
-            }
-        })
-    }
-
+  const {username} = useParams()
+  const [links, setLinks] = useState<UserLinkResponse>()
+  const ctx = useContext(AuthUserContext)
+  
+  useEffect(()=>{
+    getUserLinks(username || "anonymous").then(data => setLinks(data))
+  },[])
+  
   return (
     <div>
         <h1>Ez itt {links?.display_name} oldala!</h1>
         {ctx && ctx.authUser.username === username && <NewUrlComponent />}
         <ul>
-            {links?.links.map(link => 
-            )}
+          {links?.links.map(link => <UrlComponent {...link} />)}
         </ul>
     </div>
   )
