@@ -1,23 +1,35 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import type { UserLink } from '../services/publicApi'
 import { AuthUserContext } from '../context/AuthenticatedUserContextProvider'
 import { deleteUrl } from '../services/protectedApi'
+import EditUrlComponent from './EditUrlComponent'
+import { useParams } from 'react-router-dom'
 
 const UrlComponent = (props: UserLink) => {
     const ctx = useContext(AuthUserContext)
+    const {username} = useParams()
 
+    const [toggleEdit, setToggleEdit] = useState(false)
     const removeURL = (id: number) => {
-        deleteUrl(id)
+        deleteUrl(id).then(res => {
+            if(res)
+                window.location.reload()
+        })
     }
 
     return (
         <li key={props.id}>
             <a href={props.url}>
                 {props.title}</a>
-            <>
+            { username == ctx?.authUser.username && <div>
                 <button onClick={() => removeURL(props.id)}>🚮</button>
-                <button>📝</button>
-            </>
+                <button onClick={() => setToggleEdit(prev => ! prev)}>📝</button>
+                {toggleEdit && <EditUrlComponent 
+                id={props.id} 
+                oldTitle={props.title} 
+                oldUrl={props.url}
+                />}
+            </div>}
         </li>
     )
 }
